@@ -1,0 +1,11 @@
+{
+    "message": {
+        "RSName": "root-sync",
+        "RSNamespace": "config-management-system",
+        "commit": "5f26b0d62e8c5eb88f6317171f2e6659fc73f227",
+        "projectID": "nanyu-dev-ci",
+        "cluster": "nanyu-cluster-1",
+        "status": "applySucceeded",
+        "topicID": "my-topic"
+    }
+}

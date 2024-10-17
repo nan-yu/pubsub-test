@@ -1,0 +1,26 @@
+# App Engine deploy error
+
+n$ gcloud app deploy
+Services to deploy:
+
+descriptor:                  [/usr/local/google/home/nanyu/projects/pubsub-test/email/appeng/python/app.yaml]
+source:                      [/usr/local/google/home/nanyu/projects/pubsub-test/email/appeng/python]
+target project:              [nanyu-dev-ci]
+target service:              [default]
+target version:              [20241016t222236]
+target url:                  [https://nanyu-dev-ci.wl.r.appspot.com]
+target service account:      [nanyu-dev-ci@appspot.gserviceaccount.com]
+
+
+Do you want to continue (Y/n)?  y
+
+Enabling service [appengineflex.googleapis.com] on project [nanyu-dev-ci]...
+Operation "operations/acf.p2-335365370934-afc51b97-c71e-4d75-940a-95e519b4c823" finished successfully.
+Beginning deployment of service [default]...
+╔════════════════════════════════════════════════════════════╗
+╠═ Uploading 8 files to Google Cloud Storage                ═╣
+╚════════════════════════════════════════════════════════════╝
+File upload done.
+Updating service [default] (this may take several minutes)...failed.
+ERROR: (gcloud.app.deploy) Error Response: [13] An internal error occurred.
+(env) nanyu@nanyu1:~/projects/pubsub-test/email/appeng/python$
