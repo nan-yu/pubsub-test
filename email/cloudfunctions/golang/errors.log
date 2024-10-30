@@ -1,0 +1,497 @@
+$ gcloud functions deploy go-pubsub-function \
+--gen2 \
+--runtime=go121 \
+--region=us-central1 \
+--source=. \
+--entry-point=ConfigSync \
+--trigger-topic=cs-topic
+
+The default build service account [335365370934-compute@developer.gserviceaccount.com] is missing the [roles/cloudbuild.builds.builder] role. This may cause issues when deploying a function. You could fix it by running the command:
+gcloud projects add-iam-policy-binding nanyu-dev-ci \
+ --member=serviceAccount:335365370934-compute@developer.gserviceaccount.com \
+ --role=roles/cloudbuild.builds.builder
+For more information, please refer to: https://cloud.google.com/functions/docs/troubleshooting#build-service-account.
+ Would you like to continue? (y/N)?  y
+
+API [eventarc.googleapis.com] not enabled on project [nanyu-dev-ci]. Would you like to enable and retry (this will take a few minutes)? (y/N)?  y
+
+Enabling service [eventarc.googleapis.com] on project [nanyu-dev-ci]...
+Operation "operations/acat.p2-335365370934-7c5ba566-468c-42a9-bedc-670e7a1e18bd" finished successfully.
+Preparing function...done.
+X Deploying function...
+  - [Build] Build in progress... Logs are available at [https://console.cloud.google.com/cloud-build/builds;region=us-central1/6af7dc54-d7a8-4684-b9f7-5506a3abeae7?project=335365370934]
+  . [Service]
+  . [Trigger]
+  . [ArtifactRegistry]
+  . [Healthcheck]
+  . [Triggercheck]
+Failed.
+ERROR: (gcloud.functions.deploy) OperationError: code=13, message=Build failed with status: FAILURE and message: An unexpected error occurred. Refer to build logs: https://console.cloud.google.com/cloud-build/builds;region=us-central1/6af7dc54-d7a8-4684-b9f7-5506a3abeae7?project=335365370934. For more details see the logs at https://console.cloud.google.com/cloud-build/builds;region=us-central1/6af7dc54-d7a8-4684-b9f7-5506a3abeae7?project=335365370934.
+
+$ gcloud functions deploy go-pubsub-function --gen2 --runtime=go121 --region=us-central1 --source=. --entry-point=HelloPubSub --trigger-topic=my-topic
+Preparing function...done.
+X Updating function (may take a while)...
+  - [Build] Build in progress... Logs are available at [https://console.cloud.google.com/cloud-build/builds;region=us-central1/a794526e-0a32-48d2-8b2b-13637af2bb11?project=335365370934]
+  . [Service]
+  . [Trigger]
+  . [ArtifactRegistry]
+  . [Healthcheck]
+  . [Triggercheck]
+Failed.
+ERROR: (gcloud.functions.deploy) OperationError: code=3, message=Build failed with status: FAILURE and message: the module path in the function's go.mod must contain a dot in the first path element before a slash, e.g. example.com/module, found: configsync/email. For more details see the logs at https://console.cloud.google.com/cloud-build/builds;region=us-central1/a794526e-0a32-48d2-8b2b-13637af2bb11?project=335365370934.
+nanyu@nanyu1:~/projects/pubsub-test/email/cloudfunctions/golang$ gcloud functions deploy go-pubsub-function --gen2 --runtime=go121 --region=us-central1 --source=. --entry-point=HelloPubSub --trigger-topic=my-topic
+Preparing function...done.
+X Updating function (may take a while)...
+  - [Build] Build in progress... Logs are available at [https://console.cloud.google.com/cloud-build/builds;region=us-central1/f1f3642a-fc1a-493a-b262-acb2fd7c2b6f?project=335365370934]
+  . [Service]
+  . [Trigger]
+  . [ArtifactRegistry]
+  . [Healthcheck]
+  . [Triggercheck]
+Failed.
+ERROR: (gcloud.functions.deploy) OperationError: code=3, message=Build failed with status: FAILURE and message: vendored dependencies must include "github.com/GoogleCloudPlatform/functions-framework-go"; if your function does not depend on the module, please add a blank import: `_ "github.com/GoogleCloudPlatform/functions-framework-go/funcframework"`. For more details see the logs at https://console.cloud.google.com/cloud-build/builds;region=us-central1/f1f3642a-fc1a-493a-b262-acb2fd7c2b6f?project=335365370934.
+
+$ gcloud functions deploy go-pubsub-function --gen2 --runtime=go121 --region=us-central1 --source=. --entry-point=HelloPubSub --trigger-topic=my-topic
+Preparing function...done.
+X Updating function (may take a while)...
+  - [Build] Build in progress... Logs are available at [https://console.cloud.google.com/cloud-build/builds;region=us-central1/7ea2ec16-3b53-496a-bac6-79255d250706?project=335365370934]
+  . [Service]
+  . [Trigger]
+  . [ArtifactRegistry]
+  . [Healthcheck]
+  . [Triggercheck]
+Failed.
+ERROR: (gcloud.functions.deploy) OperationError: code=3, message=Build failed with status: FAILURE and message: go: ignoring package functions.local/app which exists in the vendor directory but is missing from vendor/modules.txt. To sync the vendor directory run go mod vendor.
+cannot find module providing package functions.local/app: import lookup disabled by -mod=vendor
+        (Go version in go.mod is at least 1.14 and vendor directory exists.). For more details see the logs at https://console.cloud.google.com/cloud-build/builds;region=us-central1/7ea2ec16-3b53-496a-bac6-79255d250706?project=335365370934.
+
+
+=> rm -rf vendor
+
+$ gcloud functions deploy go-pubsub-function --gen2 --runtime=go121 --region=us-central1 --source=. --entry-point=HelloPubSub --trigger-topic=my-topic
+Preparing function...done.
+X Updating function (may take a while)...
+  ✓ [Build] Logs are available at [https://console.cloud.google.com/cloud-build/builds;region=us-central1/55354b9a-0067-4ded-bb97-3189790246f5?project=335365370934]
+  - [Service] Updating Cloud Run service...
+  . [Trigger]
+  . [ArtifactRegistry]
+  . [Healthcheck]
+  . [Triggercheck]
+Failed.
+ERROR: (gcloud.functions.deploy) OperationError: code=3, message=Could not create or update Cloud Run service go-pubsub-function, Container Healthcheck failed. Revision 'go-pubsub-function-00001-rex' is not ready and cannot serve traffic. The user-provided container failed to start and listen on the port defined provided by the PORT=8080 environment variable. Logs for this revision might contain more information.
+
+Logs URL: https://console.cloud.google.com/logs/viewer?project=nanyu-dev-ci&resource=cloud_run_revision/service_name/go-pubsub-function/revision_name/go-pubsub-function-00001-rex&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22go-pubsub-function%22%0Aresource.labels.revision_name%3D%22go-pubsub-function-00001-rex%22
+For more troubleshooting guidance, see https://cloud.google.com/run/docs/troubleshooting#container-failed-to-start
+
+
+$ gcloud functions deploy go-pubsub-function --gen2 --runtime=go121 --region=us-central1 --source=. --entry-point=ConfigSync --trigger-topic=my-topic
+Preparing function...done.
+✓ Deploying function...
+  ✓ [Build] Logs are available at [https://console.cloud.google.com/cloud-build/builds;region=us-central1/98816ff0-4315-4e8c-b690-ff94826d8cf0?project=335365370934]
+  ✓ [Service]
+  ✓ [Trigger]
+  . [ArtifactRegistry]
+  . [Healthcheck]
+  . [Triggercheck]
+Done.
+You can view your function in the Cloud Console here: https://console.cloud.google.com/functions/details/us-central1/go-pubsub-function?project=nanyu-dev-ci
+
+buildConfig:
+  automaticUpdatePolicy: {}
+  build: projects/335365370934/locations/us-central1/builds/98816ff0-4315-4e8c-b690-ff94826d8cf0
+  dockerRegistry: ARTIFACT_REGISTRY
+  dockerRepository: projects/nanyu-dev-ci/locations/us-central1/repositories/gcf-artifacts
+  entryPoint: ConfigSync
+  runtime: go121
+  serviceAccount: projects/nanyu-dev-ci/serviceAccounts/335365370934-compute@developer.gserviceaccount.com
+  source:
+    storageSource:
+      bucket: gcf-v2-sources-335365370934-us-central1
+      generation: '1729553707689484'
+      object: go-pubsub-function/function-source.zip
+  sourceProvenance:
+    resolvedStorageSource:
+      bucket: gcf-v2-sources-335365370934-us-central1
+      generation: '1729553707689484'
+      object: go-pubsub-function/function-source.zip
+createTime: '2024-10-21T23:35:07.940711526Z'
+environment: GEN_2
+eventTrigger:
+  eventType: google.cloud.pubsub.topic.v1.messagePublished
+  pubsubTopic: projects/nanyu-dev-ci/topics/my-topic
+  retryPolicy: RETRY_POLICY_DO_NOT_RETRY
+  serviceAccountEmail: 335365370934-compute@developer.gserviceaccount.com
+  trigger: projects/nanyu-dev-ci/locations/us-central1/triggers/go-pubsub-function-448626
+  triggerRegion: us-central1
+labels:
+  deployment-tool: cli-gcloud
+name: projects/nanyu-dev-ci/locations/us-central1/functions/go-pubsub-function
+serviceConfig:
+  allTrafficOnLatestRevision: true
+  availableCpu: '0.1666'
+  availableMemory: 256M
+  environmentVariables:
+    LOG_EXECUTION_ID: 'true'
+  ingressSettings: ALLOW_ALL
+  maxInstanceCount: 100
+  maxInstanceRequestConcurrency: 1
+  revision: go-pubsub-function-00001-siy
+  service: projects/nanyu-dev-ci/locations/us-central1/services/go-pubsub-function
+  serviceAccountEmail: 335365370934-compute@developer.gserviceaccount.com
+  timeoutSeconds: 60
+  uri: https://go-pubsub-function-lgubo7f6ka-uc.a.run.app
+state: ACTIVE
+updateTime: '2024-10-21T23:36:36.626182862Z'
+url: https://us-central1-nanyu-dev-ci.cloudfunctions.net/go-pubsub-function
+
+
+
+$ gcloud iam service-accounts create cloud-run-pubsub-invoker \
+    --display-name "Cloud Run Pub/Sub Invoker"
+Created service account [cloud-run-pubsub-invoker].
+
+
+
+$ gcloud run services add-iam-policy-binding go-pubsub-function --member=serviceAccount:cloud-run-pubsub-invoker@nanyu-dev-ci.iam.gserviceaccount.com --role=roles/run.invoker
+Please specify a region:
+ [1] africa-south1
+ [2] asia-east1
+ [3] asia-east2
+ [4] asia-northeast1
+ [5] asia-northeast2
+ [6] asia-northeast3
+ [7] asia-south1
+ [8] asia-south2
+ [9] asia-southeast1
+ [10] asia-southeast2
+ [11] australia-southeast1
+ [12] australia-southeast2
+ [13] europe-central2
+ [14] europe-north1
+ [15] europe-north2
+ [16] europe-southwest1
+ [17] europe-west1
+ [18] europe-west10
+ [19] europe-west12
+ [20] europe-west2
+ [21] europe-west3
+ [22] europe-west4
+ [23] europe-west6
+ [24] europe-west8
+ [25] europe-west9
+ [26] me-central1
+ [27] me-central2
+ [28] me-west1
+ [29] northamerica-northeast1
+ [30] northamerica-northeast2
+ [31] northamerica-south1
+ [32] southamerica-east1
+ [33] southamerica-west1
+ [34] us-central1
+ [35] us-central2
+ [36] us-east1
+ [37] us-east4
+ [38] us-east5
+ [39] us-east7
+ [40] us-south1
+ [41] us-west1
+ [42] us-west2
+ [43] us-west3
+ [44] us-west4
+ [45] us-west8
+ [46] cancel
+Please enter numeric choice or text value (must exactly match list item):  34
+
+To make this the default region, run `gcloud config set run/region us-central1`.
+
+Updated IAM policy for service [go-pubsub-function].
+bindings:
+- members:
+  - serviceAccount:cloud-run-pubsub-invoker@nanyu-dev-ci.iam.gserviceaccount.com
+  role: roles/run.invoker
+etag: BwYlBTpuvFw=
+version: 1
+
+
+$ gcloud projects add-iam-policy-binding nanyu-dev-ci \
+   --member=serviceAccount:service-335365370934@gcp-sa-pubsub.iam.gserviceaccount.com \
+   --role=roles/iam.serviceAccountTokenCreator
+Updated IAM policy for project [nanyu-dev-ci].
+bindings:
+- members:
+  - serviceAccount:service-335365370934@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com
+  role: roles/anthosconfigmanagement.serviceAgent
+- members:
+  - serviceAccount:service-335365370934@gcp-sa-anthospolicycontroller.iam.gserviceaccount.com
+  role: roles/anthospolicycontroller.serviceAgent
+- members:
+  - serviceAccount:service-335365370934@gcp-gae-service.iam.gserviceaccount.com
+  role: roles/appengine.serviceAgent
+- members:
+  - serviceAccount:service-335365370934@gae-api-prod.google.com.iam.gserviceaccount.com
+  role: roles/appengineflex.serviceAgent
+- members:
+  - serviceAccount:335365370934-compute@developer.gserviceaccount.com
+  - serviceAccount:600530581450-compute@developer.gserviceaccount.com
+  - serviceAccount:e2e-test-ar-reader@nanyu-dev-ci.iam.gserviceaccount.com
+  role: roles/artifactregistry.reader
+- members:
+  - serviceAccount:service-335365370934@gcp-sa-artifactregistry.iam.gserviceaccount.com
+  role: roles/artifactregistry.serviceAgent
+- members:
+  - serviceAccount:335365370934-compute@developer.gserviceaccount.com
+  - serviceAccount:335365370934@cloudbuild.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:service-335365370934@gcp-sa-cloudbuild.iam.gserviceaccount.com
+  role: roles/cloudbuild.serviceAgent
+- members:
+  - serviceAccount:service-335365370934@gcp-sa-clouddeploy.iam.gserviceaccount.com
+  role: roles/clouddeploy.serviceAgent
+- members:
+  - serviceAccount:service-335365370934@gcf-admin-robot.iam.gserviceaccount.com
+  role: roles/cloudfunctions.serviceAgent
+- members:
+  - serviceAccount:335365370934@cloudservices.gserviceaccount.com
+  - serviceAccount:service-335365370934@gae-api-prod.google.com.iam.gserviceaccount.com
+  role: roles/compute.networkUser
+- members:
+  - serviceAccount:service-335365370934@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:service-335365370934@gcp-sa-connectors.iam.gserviceaccount.com
+  role: roles/connectors.serviceAgent
+- members:
+  - serviceAccount:service-335365370934@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-335365370934@container-analysis.iam.gserviceaccount.com
+  role: roles/containeranalysis.ServiceAgent
+- members:
+  - serviceAccount:e2e-test-gcr-reader@nanyu-dev-ci.iam.gserviceaccount.com
+  - serviceAccount:service-335365370934@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:service-335365370934@gcp-sa-containerscanning.iam.gserviceaccount.com
+  role: roles/containerscanning.ServiceAgent
+- members:
+  - serviceAccount:335365370934@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:service-335365370934@gcp-sa-eventarc.iam.gserviceaccount.com
+  role: roles/eventarc.serviceAgent
+- members:
+  - serviceAccount:service-335365370934@gcp-sa-firestore.iam.gserviceaccount.com
+  role: roles/firestore.serviceAgent
+- members:
+  - serviceAccount:service-109079520351@gcp-sa-gkehub.iam.gserviceaccount.com
+  - serviceAccount:service-335365370934@gcp-sa-gkehub.iam.gserviceaccount.com
+  role: roles/gkehub.serviceAgent
+- members:
+  - serviceAccount:service-335365370934@gcp-sa-pubsub.iam.gserviceaccount.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:service-335365370934@gcp-sa-integrations.iam.gserviceaccount.com
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:app-integration-test-sa@nanyu-dev-ci.iam.gserviceaccount.com
+  - serviceAccount:service-335365370934@gcp-sa-integrations.iam.gserviceaccount.com
+  role: roles/integrations.integrationInvoker
+- members:
+  - serviceAccount:service-335365370934@gcp-sa-integrations.iam.gserviceaccount.com
+  role: roles/integrations.serviceAgent
+- members:
+  - serviceAccount:e2e-test-metric-writer@nanyu-dev-ci.iam.gserviceaccount.com
+  - user:nanyu@google.com
+  role: roles/logging.logWriter
+- members:
+  - serviceAccount:custom-metrics-sa@nanyu-dev-ci.iam.gserviceaccount.com
+  role: roles/monitoring.admin
+- members:
+  - serviceAccount:335365370934-compute@developer.gserviceaccount.com
+  - serviceAccount:cs-dev-hub.svc.id.goog[config-management-monitoring/default]
+  - serviceAccount:custom-metrics-sa@nanyu-dev-ci.iam.gserviceaccount.com
+  - serviceAccount:e2e-test-metric-writer@nanyu-dev-ci.iam.gserviceaccount.com
+  - serviceAccount:nanyu-dev-ci.svc.id.goog[config-management-monitoring/default]
+  - user:nanyu@google.com
+  role: roles/monitoring.metricWriter
+- members:
+  - serviceAccount:custom-metrics-sa@nanyu-dev-ci.iam.gserviceaccount.com
+  role: roles/monitoring.metricsScopesAdmin
+- members:
+  - serviceAccount:service-335365370934@gcp-sa-mcmetering.iam.gserviceaccount.com
+  role: roles/multiclustermetering.serviceAgent
+- members:
+  - serviceAccount:service-335365370934@gcp-sa-networkconnectivity.iam.gserviceaccount.com
+  role: roles/networkconnectivity.serviceAgent
+- members:
+  - serviceAccount:custom-metrics-sa@nanyu-dev-ci.iam.gserviceaccount.com
+  - user:nanyu@google.com
+  - user:peip@google.com
+  role: roles/owner
+- members:
+  - serviceAccount:service-335365370934@gcp-sa-integrations.iam.gserviceaccount.com
+  role: roles/pubsub.editor
+- members:
+  - user:nanyu@google.com
+  role: roles/pubsub.publisher
+- members:
+  - serviceAccount:service-335365370934@gcp-sa-pubsub.iam.gserviceaccount.com
+  role: roles/pubsub.serviceAgent
+- members:
+  - user:nanyu@google.com
+  role: roles/pubsub.subscriber
+- members:
+  - serviceAccount:service-335365370934@serverless-robot-prod.iam.gserviceaccount.com
+  role: roles/run.serviceAgent
+- members:
+  - serviceAccount:335365370934-compute@developer.gserviceaccount.com
+  - serviceAccount:e2e-test-csr-reader@nanyu-dev-ci.iam.gserviceaccount.com
+  - user:nanyu@google.com
+  role: roles/source.reader
+- members:
+  - serviceAccount:335365370934-compute@developer.gserviceaccount.com
+  - serviceAccount:600530581450-compute@developer.gserviceaccount.com
+  - serviceAccount:e2e-test-gcr-reader@nanyu-dev-ci.iam.gserviceaccount.com
+  - serviceAccount:service-335365370934@gcp-sa-artifactregistry.iam.gserviceaccount.com
+  role: roles/storage.objectViewer
+etag: BwYlBT7UrP4=
+version: 1
+
+
+===== 10/24/2024
+gcloud services enable cloudfunctions.googleapis.com eventarc.googleapis.com --project=${GCP_PROJECT}
+
+gcloud functions deploy go-pubsub-function \
+--gen2 \
+--runtime=go121 \
+--region=us-central1 \
+--source=. \
+--entry-point=ConfigSync \
+--trigger-topic=cs-topic \
+--project=${GCP_PROJECT}
+
+gcloud projects add-iam-policy-binding cs-pubsub-test-15 \
+ --member=serviceAccount:496624494440-compute@developer.gserviceaccount.com \
+ --role=roles/cloudbuild.builds.builder \
+ --project=${GCP_PROJECT}
+
+
+$ gcloud functions deploy go-pubsub-function \
+--gen2 \
+--runtime=go121 \
+--region=us-central1 \
+--source=. \
+--entry-point=ConfigSync \
+--trigger-topic=cs-topic \
+--service-account ${PUBSUB_INVOKER}@${GCP_PROJECT}.iam.gserviceaccount.com \
+--run-service-account ${RUN_SERVICE_IDENTITY}@${GCP_PROJECT}.iam.gserviceaccount.com \
+--project=${GCP_PROJECT}
+
+The default build service account [496624494440-compute@developer.gserviceaccount.com] is missing the [roles/cloudbuild.builds.builder] role. This may cause issues when deploying a function. You could fix it by running the command:
+gcloud projects add-iam-policy-binding cs-pubsub-test-15 \
+ --member=serviceAccount:496624494440-compute@developer.gserviceaccount.com \
+ --role=roles/cloudbuild.builds.builder
+For more information, please refer to: https://cloud.google.com/functions/docs/troubleshooting#build-service-account.
+ Would you like to continue? (y/N)?  y
+
+API [eventarc.googleapis.com] not enabled on project [cs-pubsub-test-15]. Would you like to enable and retry (this will take a few minutes)? (y/N)?  y
+
+Enabling service [eventarc.googleapis.com] on project [cs-pubsub-test-15]...
+Preparing function...done.
+✓ Deploying function...
+  ✓ [Build] Logs are available at [https://console.cloud.google.com/cloud-build/builds;region=us-central1/06d4926a-631c-4d29-bb0b-833ba00aaef2?project=496624494440]
+  ✓ [Service]
+  ✓ [Trigger]
+  . [ArtifactRegistry]
+  . [Healthcheck]
+  . [Triggercheck]
+Done.
+You can view your function in the Cloud Console here: https://console.cloud.google.com/functions/details/us-central1/go-pubsub-function?project=cs-pubsub-test-15
+
+buildConfig:
+  automaticUpdatePolicy: {}
+  build: projects/496624494440/locations/us-central1/builds/06d4926a-631c-4d29-bb0b-833ba00aaef2
+  dockerRegistry: ARTIFACT_REGISTRY
+  dockerRepository: projects/cs-pubsub-test-15/locations/us-central1/repositories/gcf-artifacts
+  entryPoint: ConfigSync
+  runtime: go121
+  serviceAccount: projects/cs-pubsub-test-15/serviceAccounts/496624494440-compute@developer.gserviceaccount.com
+  source:
+    storageSource:
+      bucket: gcf-v2-sources-496624494440-us-central1
+      generation: '1729814839083744'
+      object: go-pubsub-function/function-source.zip
+  sourceProvenance:
+    resolvedStorageSource:
+      bucket: gcf-v2-sources-496624494440-us-central1
+      generation: '1729814839083744'
+      object: go-pubsub-function/function-source.zip
+createTime: '2024-10-25T00:07:20.761663322Z'
+environment: GEN_2
+eventTrigger:
+  eventType: google.cloud.pubsub.topic.v1.messagePublished
+  pubsubTopic: projects/cs-pubsub-test-15/topics/cs-topic
+  retryPolicy: RETRY_POLICY_DO_NOT_RETRY
+  serviceAccountEmail: 496624494440-compute@developer.gserviceaccount.com
+  trigger: projects/cs-pubsub-test-15/locations/us-central1/triggers/go-pubsub-function-641068
+  triggerRegion: us-central1
+labels:
+  deployment-tool: cli-gcloud
+name: projects/cs-pubsub-test-15/locations/us-central1/functions/go-pubsub-function
+serviceConfig:
+  allTrafficOnLatestRevision: true
+  availableCpu: '0.1666'
+  availableMemory: 256M
+  environmentVariables:
+    LOG_EXECUTION_ID: 'true'
+  ingressSettings: ALLOW_ALL
+  maxInstanceCount: 100
+  maxInstanceRequestConcurrency: 1
+  revision: go-pubsub-function-00001-qiq
+  service: projects/cs-pubsub-test-15/locations/us-central1/services/go-pubsub-function
+  serviceAccountEmail: 496624494440-compute@developer.gserviceaccount.com
+  timeoutSeconds: 60
+  uri: https://go-pubsub-function-wkginxm7yq-uc.a.run.app
+state: ACTIVE
+updateTime: '2024-10-25T00:09:07.980136634Z'
+url: https://us-central1-cs-pubsub-test-15.cloudfunctions.net/go-pubsub-function
+nanyu@nanyu1:~/projects/pubsub-test/email/cloudfunctions/golang$
+
+$  gcloud run services add-iam-policy-binding go-pubsub-function --member=serviceAccount:${RUN_SERVICE_IDENTITY}@${GCP_PROJECT}.iam.gserviceaccount.com --project=cs-pubsub-test-15 --region=us-central1 --role=roles/run.invoker
+Updated IAM policy for service [go-pubsub-function].
+bindings:
+- members:
+  - serviceAccount:496624494440-compute@developer.gserviceaccount.com
+  - serviceAccount:cs-run-identity@cs-pubsub-test-15.iam.gserviceaccount.com    # That's the one!!
+  - serviceAccount:cs-run-pubsub-invoker@cs-pubsub-test-15.iam.gserviceaccount.com
+  role: roles/run.invoker
+etag: BwYlUQDoQ_s=
+version: 1
+
+CS_FUNCTION_IDENTITY=cs-function-sa
+CS_RUN_SERVICE_SA=cs-run-service-sa
+CS_FUNCTION_BUILD_SA=cs-function-build-sa
+gcloud iam service-accounts create ${CS_FUNCTION_IDENTITY} \
+    --display-name "Cloud Run Function Identity" \
+    --project=${GCP_PROJECT}
+
+gcloud iam service-accounts create ${CS_RUN_SERVICE_SA} \
+    --display-name "Cloud Run Service SA" \
+    --project=${GCP_PROJECT}
+
+gcloud iam service-accounts create ${CS_FUNCTION_BUILD_SA} \
+    --display-name "Cloud Run Function Build SA" \
+    --project=${GCP_PROJECT}
+
+gcloud functions deploy go-pubsub-function \
+--gen2 \
+--runtime=go121 \
+--region=us-central1 \
+--source=. \
+--entry-point=ConfigSync \
+--trigger-topic=cs-topic \
+--service-account ${CS_FUNCTION_IDENTITY}@${GCP_PROJECT}.iam.gserviceaccount.com \
+--run-service-account ${RUN_SERVICE_IDENTITY}@${GCP_PROJECT}.iam.gserviceaccount.com \
+--build-service-account ${CS_RUN_SERVICE_SA}@${GCP_PROJECT}.iam.gserviceaccount.com \
+--project=${GCP_PROJECT}

@@ -4,7 +4,8 @@
         "RSNamespace": "config-management-system",
         "commit": "5f26b0d62e8c5eb88f6317171f2e6659fc73f227",
         "projectID": "nanyu-dev-ci",
-        "cluster": "nanyu-cluster-1",
+        "clusterName": "nanyu-cluster-1",
+        "nodeName": "gke-nanyu-cluster-1-default-pool-58c76692-81d7",
         "status": "applySucceeded",
         "topicID": "my-topic"
     }

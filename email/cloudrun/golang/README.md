@@ -37,6 +37,7 @@ Google Cloud services.
    authentication. Gmail users can create app passwords by following these
    instructions:
    [Sign in with app passwords](https://support.google.com/mail/answer/185833).
+4. **Project Owner**: You need to be the project owner to run the script.
 
 ## Running the Demo
 
@@ -106,7 +107,7 @@ The `send-email-demo.sh` script performs the following steps:
 | cs-run-builder@${GCP_PROJECT}.iam.gserviceaccount.com                | roles/storage.admin                  | Grants the Cloud Build builder admin access to Cloud Storage.                                                  |
 | cs-run-builder@${GCP_PROJECT}.iam.gserviceaccount.com                | roles/artifactregistry.writer        | Allows the Cloud Build builder to publish the service's container image to Artifact Registry.                  |
 | cs-run-identity@{GCP_PROJECT}.iam.gserviceaccount.com                | roles/secretmanager.secretAccessor   | Grants the Cloud Run service account access to secrets stored in Secret Manager.                               |
-| {PROJECT_NUMBER}-compute@developer.gserviceaccount.com               | roles/artifactregistry.reader        | Grants the Compute Engine default service account read access to Artifact Registry.                            |
+| ${project_numer}-compute@developer.gserviceaccount.com               | roles/artifactregistry.reader        | Grants the Compute Engine default service account read access to Artifact Registry.                            |
 | ${GCP_PROJECT}.svc.id.goog[config-management-system/root-reconciler] | roles/pubsub.publisher               | Grants the Config Sync root-reconciler's Kubernetes service account permission to publish messages to Pub/Sub. |
 ## Clean up
 

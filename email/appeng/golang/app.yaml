@@ -12,22 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-runtime: python
+runtime: go
 env: flex
-entrypoint: gunicorn -b :$PORT main:app
 
 runtime_config:
   operating_system: ubuntu22
-  runtime_version: "3.12"
+  runtime_version: 1.21
 
 automatic_scaling:
   min_num_instances: 1
 
 #[START gae_flex_pubsub_yaml]
 env_variables:
-  PUBSUB_TOPIC: my-topic
+  PUBSUB_TOPIC: cs-topic
   MAIL_FROM: cs-pubsub-test@google.com
   MAIL_TO: cs-pubsub-test@google.com
-  MAIL_SERVER:  smtp.gmail.com:465
-  MAIL_PASSWORD:
+  MAIL_SERVER: smtp.gmail.com
+  MAIL_PORT: 465
 #[END gae_flex_pubsub_yaml]

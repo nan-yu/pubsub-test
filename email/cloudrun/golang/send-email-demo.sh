@@ -23,17 +23,19 @@ MAIL_PASSWD_NAME=cs-pubsub-mail-password
 MAIL_USERNAME_NAME=cs-pubsub-mail-username
 PUBSUB_SUBSCRIPTION_NAME=cs-pubsub-subscription
 
+api_services=(
+  "artifactregistry.googleapis.com"
+  "cloudbuild.googleapis.com"
+  "pubsub.googleapis.com"
+  "run.googleapis.com"
+  "container.googleapis.com"
+  "compute.googleapis.com"
+  "secretmanager.googleapis.com"
+)
+
 function main() {
   # Enable APIs
-  gcloud services enable \
-    artifactregistry.googleapis.com \
-    cloudbuild.googleapis.com \
-    pubsub.googleapis.com \
-    run.googleapis.com \
-    container.googleapis.com \
-    compute.googleapis.com \
-    secretmanager.googleapis.com \
-    --project=${GCP_PROJECT} || fail "failed to enable API services"
+  enable_api_services
 
   # Cluster setup
   create_cluster
@@ -79,6 +81,25 @@ function retry {
   fi
 }
 
+function check_all_api_services_enabled() {
+  for api_service in "${api_services[@]}"; do
+    if ! gcloud services list | grep -q "${api_service}"; then
+      echo "API service not enabled: ${api_service}"
+      return 1
+    fi
+  done
+}
+
+function enable_api_services() {
+  echo "Enabling API services"
+  for api_service in "${api_services[@]}"; do
+    gcloud services enable "${api_service}" --project=${GCP_PROJECT} ||
+      fail "failed to enable API services ${api_service}"
+  done
+
+  retry 3 check_all_api_services_enabled || fail "Not all API services are enabled"
+}
+
 function configure_pubsub() {
   echo "Creating a service account to represent the Pub/Sub subscription identity"
   gcloud iam service-accounts create ${PUBSUB_INVOKER} \
@@ -99,7 +120,7 @@ function configure_pubsub() {
     fail "failed to grant the permission to invoke the cloud run service"
 
   # Allow Pub/Sub to create authentication tokens in the project.
-  project_numer=$(gcloud projects describe ${GCP_PROJECT} --format=json | jq -r .projectNumber)
+  project_numer=$(gcloud projects describe ${GCP_PROJECT} --format=json | jq -r .projectNumber || "")
   gcloud projects add-iam-policy-binding ${GCP_PROJECT} \
      --member=serviceAccount:service-${project_numer}@gcp-sa-pubsub.iam.gserviceaccount.com \
      --role=roles/iam.serviceAccountTokenCreator ||
@@ -174,7 +195,7 @@ function build_and_publish_run_service() {
   # If no service-account is provided, it uses the GCE default service account:
   # https://cloud.google.com/build/docs/cloud-build-service-account.
   # When service-account is specified, it also requires setting the default bucket behavior.
-  pushd ${SCRIPT_DIR}/golang
+  pushd ${SCRIPT_DIR}
   gcloud builds submit \
     --tag ${REGION}-docker.pkg.dev/${GCP_PROJECT}/${AR_REPO}/pubsub \
     --service-account projects/${GCP_PROJECT}/serviceAccounts/${RUN_BUILD_SA}@${GCP_PROJECT}.iam.gserviceaccount.com \

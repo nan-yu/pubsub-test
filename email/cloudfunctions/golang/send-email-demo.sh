@@ -24,19 +24,21 @@ RUN_FUNCTION=cs-pubsub-functions-test
 MAIL_PASSWD_NAME=cs-pubsub-mail-password
 MAIL_USERNAME_NAME=cs-pubsub-mail-username
 
+api_services=(
+  "artifactregistry.googleapis.com"
+  "cloudbuild.googleapis.com"
+  "pubsub.googleapis.com"
+  "run.googleapis.com"
+  "container.googleapis.com"
+  "compute.googleapis.com"
+  "secretmanager.googleapis.com"
+  "cloudfunctions.googleapis.com"
+  "eventarc.googleapis.com"
+)
+
 function main() {
   # Enable APIs
-  gcloud services enable \
-    artifactregistry.googleapis.com \
-    cloudbuild.googleapis.com \
-    pubsub.googleapis.com \
-    run.googleapis.com \
-    container.googleapis.com \
-    compute.googleapis.com \
-    secretmanager.googleapis.com \
-    cloudfunctions.googleapis.com \
-    eventarc.googleapis.com \
-    --project=${GCP_PROJECT} || fail "failed to enable API services"
+  enable_api_services
 
   # Cluster setup
   create_cluster
@@ -78,6 +80,25 @@ function retry {
   if (( n > max )); then
     fail "The command has failed after $max attempts."
   fi
+}
+
+function check_all_api_services_enabled() {
+  for api_service in "${api_services[@]}"; do
+    if ! gcloud services list | grep -q "${api_service}"; then
+      echo "API service not enabled: ${api_service}"
+      return 1
+    fi
+  done
+}
+
+function enable_api_services() {
+  echo "Enabling API services"
+  for api_service in "${api_services[@]}"; do
+    gcloud services enable "${api_service}" --project=${GCP_PROJECT} ||
+      fail "failed to enable API services ${api_service}"
+  done
+
+  retry 3 check_all_api_services_enabled || fail "Not all API services are enabled"
 }
 
 function create_secrets() {
